@@ -40,6 +40,7 @@
     vim-cursorword = { url = "github:itchyny/vim-cursorword"; flake = false; };
     vim-test = { url = "github:vim-test/vim-test"; flake = false; };
     nvim-which-key = { url = "github:folke/which-key.nvim"; flake = false; };
+#    ai-text-assist = { url = "github:bastiion/ai-text-assist"; flake = false; };
   };
 
   outputs = { self, nixpkgs, neovim, rnix-lsp, ... }@inputs:
@@ -72,6 +73,7 @@
       "vim-cursorword"
       "vim-test"
       "nvim-which-key"
+ #     "ai-text-assist"
     ];
 
     externalBitsOverlay = top: last: {
@@ -108,7 +110,7 @@
           vim.dashboard.startify.enable = true;
           vim.dashboard.startify.customHeader = [ "NIXOS NEOVIM CONFIG" ];
           vim.theme.nord.enable = true;
-          vim.disableArrows = true;
+          vim.disableArrows = false;
           vim.statusline.lightline.enable = true;
           vim.lsp.enable = true;
           vim.lsp.bash = true;
