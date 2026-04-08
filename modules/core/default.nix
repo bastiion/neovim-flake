@@ -127,12 +127,12 @@ in {
 
   config = let
     filterNonNull = mappings: filterAttrs (name: value: value != null) mappings;
-    globalsScript = mapAttrsFlatten(name: value: "let g:${name}=${toJSON value}") (filterNonNull cfg.globals);
+    globalsScript = mapAttrsToList (name: value: "let g:${name}=${toJSON value}") (filterNonNull cfg.globals);
 
     matchCtrl = it: match "Ctrl-(.)(.*)" it;
     mapKeybinding = it:
       let groups = matchCtrl it; in if groups == null then it else "<C-${toUpper (head groups)}>${head (tail groups)}";
-      mapVimBinding = prefix: mappings: mapAttrsFlatten (name: value: "${prefix} ${mapKeybinding name} ${value}") (filterNonNull mappings);
+      mapVimBinding = prefix: mappings: mapAttrsToList (name: value: "${prefix} ${mapKeybinding name} ${value}") (filterNonNull mappings);
     
     nmap = mapVimBinding "nmap" config.vim.nmap;
     imap = mapVimBinding "imap" config.vim.imap;

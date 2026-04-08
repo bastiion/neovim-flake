@@ -4,13 +4,8 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    neovim = {
-      url = "github:neovim/neovim?dir=contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-
-    rnix-lsp = { url = "github:nix-community/rnix-lsp"; };
+    # Use package output directly (not as overlay) to avoid tree-sitter hash mismatches.
+    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
 
     # Vim plugins
     gruvbox = { url = "github:morhetz/gruvbox"; flake = false; };
@@ -43,7 +38,7 @@
 #    ai-text-assist = { url = "github:bastiion/ai-text-assist"; flake = false; };
   };
 
-  outputs = { self, nixpkgs, neovim, rnix-lsp, ... }@inputs:
+  outputs = { self, nixpkgs, ... }@inputs:
   let
     plugins = [
       "gruvbox"
@@ -77,15 +72,16 @@
     ];
 
     externalBitsOverlay = top: last: {
-      rnix-lsp = rnix-lsp.defaultPackage.${top.system};
-      neovim-nightly = neovim.defaultPackage.${top.system};
+      neovim-nightly = inputs.neovim-nightly-overlay.packages.${top.system}.default;
     };
 
     pluginOverlay = top: last: let
-      buildPlug = name: top.vimUtils.buildVimPluginFrom2Nix {
+      buildPlug = name: top.vimUtils.buildVimPlugin {
         pname = name;
         version = "master";
         src = builtins.getAttr name inputs;
+        # Git master snapshots often fail neovimRequireCheckHook vs nightly Neovim.
+        doCheck = false;
       };
     in {
       neovimPlugins = builtins.listToAttrs (map (name: { inherit name; value = buildPlug name; }) plugins);
@@ -144,23 +140,27 @@
 
   in {
 
-    apps = lib.withDefaultSystems (sys:
-    {
+    apps = lib.withDefaultSystems (sys: {
       nvim = {
         type = "app";
-        program = "${self.defaultPackage."${sys}"}/bin/nvim";
+        program = "${self.packages."${sys}".neovimWT}/bin/nvim";
+      };
+      default = {
+        type = "app";
+        program = "${self.packages."${sys}".neovimWT}/bin/nvim";
       };
     });
 
     defaultApp = lib.withDefaultSystems (sys: {
       type = "app";
-      program = "${self.defaultPackage."${sys}"}/bin/nvim";
+      program = "${self.packages."${sys}".neovimWT}/bin/nvim";
     });
 
     defaultPackage = lib.withDefaultSystems (sys: self.packages."${sys}".neovimWT);
 
     packages = lib.withDefaultSystems (sys: {
       neovimWT = mkNeoVimPkg allPkgs."${sys}";
+      default = mkNeoVimPkg allPkgs."${sys}";
     });
   };
 }

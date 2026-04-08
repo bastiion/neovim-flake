@@ -185,7 +185,7 @@ in {
       ${if cfg.bash then ''
         lspconfig.bashls.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {"${pkgs.nodePackages.bash-language-server}/bin/bash-language-server", "start"}
+          cmd = {"${pkgs.bash-language-server}/bin/bash-language-server", "start"}
         }
       '' else ""}
 
@@ -243,9 +243,9 @@ in {
       '' else ""}
 
       ${if cfg.nix then ''
-        lspconfig.rnix.setup{
+        lspconfig.nixd.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {"${pkgs.rnix-lsp}/bin/rnix-lsp"}
+          cmd = {"${pkgs.nixd}/bin/nixd"}
         }
       '' else ""}
 
@@ -273,35 +273,35 @@ in {
       ${if cfg.typescript then ''
         lspconfig.tsserver.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.typescript-language-server}/bin/typescript-language-server', '--stdio' }
+          cmd = {'${pkgs.typescript-language-server}/bin/typescript-language-server', '--stdio' }
         }
       '' else ""}
 
       ${if cfg.vimscript then ''
         lspconfig.vimls.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.vim-language-server}/bin/vim-language-server', '--stdio' }
+          cmd = {'${pkgs.vim-language-server}/bin/vim-language-server', '--stdio' }
         }
       '' else ""}
 
       ${if cfg.yaml then ''
         lspconfig.vimls.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.yaml-language-server}/bin/yaml-language-server', '--stdio' }
+          cmd = {'${pkgs.yaml-language-server}/bin/yaml-language-server', '--stdio' }
         }
       '' else ""}
 
       ${if cfg.docker then ''
         lspconfig.dockerls.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.dockerfile-language-server-nodejs}/bin/docker-language-server', '--stdio' }
+          cmd = {'${pkgs.dockerfile-language-server}/bin/docker-language-server', '--stdio' }
         }
       '' else ""}
 
       ${if cfg.css then ''
         lspconfig.cssls.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.vscode-css-languageserver-bin}/bin/css-languageserver', '--stdio' };
+          cmd = {'${pkgs.vscode-css-languageserver}/bin/vscode-css-language-server', '--stdio' };
           filetypes = { "css", "scss", "less" }; 
         }
       '' else ""}
@@ -309,7 +309,7 @@ in {
       ${if cfg.html then ''
         lspconfig.html.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.vscode-html-languageserver-bin}/bin/html-languageserver', '--stdio' };
+          cmd = {'${pkgs.vscode-langservers-extracted}/bin/vscode-html-language-server', '--stdio' };
           filetypes = { "html", "css", "javascript" }; 
         }
       '' else ""}
@@ -317,7 +317,7 @@ in {
       ${if cfg.json then ''
         lspconfig.jsonls.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {'${pkgs.nodePackages.vscode-json-languageserver-bin}/bin/json-languageserver', '--stdio' };
+          cmd = {'${pkgs.vscode-json-languageserver}/bin/vscode-json-language-server', '--stdio' };
           filetypes = { "html", "css", "javascript" }; 
         }
       '' else ""}
@@ -348,7 +348,7 @@ in {
       ${if cfg.python then ''
         lspconfig.pyright.setup{
           on_attach=require'completion'.on_attach;
-          cmd = {"${pkgs.nodePackages.pyright}/bin/pyright-langserver", "--stdio"}
+          cmd = {"${pkgs.pyright}/bin/pyright-langserver", "--stdio"}
         }
 
       '' else ""}
