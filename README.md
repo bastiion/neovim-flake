@@ -1,4 +1,6 @@
 # What is this?
+[![built with garnix](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Fgarnix.io%2Fapi%2Fbadges%2Fbastiion%2Fneovim-flake)](https://garnix.io/repo/bastiion/neovim-flake)
+
 
 This is my personal Neovim config. Feel free to take bits of it to build your own or run it yourself.
 
